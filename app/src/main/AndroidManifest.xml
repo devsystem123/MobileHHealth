@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.a16254838.hospitalhhealth">
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".lerQrCode" />
+        <activity android:name=".Senha_paciente" />
+        <activity android:name=".Consulta" />
+        <activity
+            android:name=".MarcarConsulta"
+            android:label="@string/title_activity_marcar_consulta"
+            android:parentActivityName=".Consulta">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.a16254838.hospitalhhealth.Consulta" />
+        </activity>
+        <activity
+            android:name=".ConsultasMarcadas"
+            android:label="@string/title_activity_consultas_marcadas"
+            android:parentActivityName=".Consulta"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.a16254838.hospitalhhealth.Consulta" />
+        </activity>
+        <activity android:name=".Listar_Exames"></activity>
+        <activity android:name=".Lista_Historico"></activity>
+    </application>
+
+</manifest>

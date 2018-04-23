@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/tabhost"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        >
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+
+            <TextView
+                android:tag="tab0"
+                android:text="Senha"
+                android:background="@android:drawable/btn_star_big_on"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                />
+            <TextView
+                android:tag="tab1"
+                android:text="Consulta"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                />
+            <TextView
+                android:tag="tab2"
+                android:text="Exame"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                />
+            <TextView
+                android:tag="tab2"
+                android:text="Historico"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                />
+        </TabWidget>
+
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <include layout="@layout/activity_senha_paciente"/>
+
+            <include layout="@layout/activity_consulta"/>
+
+            <include layout="@layout/activity_listar__exames"/>
+
+            <include layout="@layout/activity_lista__historico"/>
+
+
+
+        </FrameLayout>
+    </LinearLayout>
+</TabHost>

@@ -1,0 +1,192 @@
+package com.example.a16254838.hospitalhhealth;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
+/**
+ * A login screen that offers login via email/password.
+ */
+public class LoginActivity extends Activity {
+
+    private static final String MANTER_CONECTADO="manter_conectado";
+
+    private EditText usuario;
+    private EditText senha;
+    Button btn_login;
+    ProgressBar progressBar;
+    String API_URL;
+    JSONObject objeto;
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        usuario = findViewById(R.id.CPF_Login);
+        senha = findViewById(R.id.senha);
+        btn_login = findViewById(R.id.btn_Login);
+        progressBar = findViewById(R.id.progress_bar);
+
+        //buscando a URL da API
+        API_URL = getString(R.string.API_URL);
+
+        //botão de login
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Efetuando o login
+                new LoginTask().execute();
+                //Toast.makeText(LoginActivity.this, "Funciona", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        SharedPreferences preferencias = getPreferences(MODE_PRIVATE);
+        boolean conectado = preferencias.getBoolean(MANTER_CONECTADO,false);
+
+        if(conectado) {
+            startActivity(new Intent(this, MainActivity.class));
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.principal_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private class LoginTask extends AsyncTask<Void,Void,Void>{
+
+        String _email, _senha;
+        String retornoApi;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressBar.setVisibility(View.VISIBLE);
+            btn_login.setVisibility(View.GONE);
+
+            _email = usuario.getText().toString();
+            _senha = senha.getText().toString();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            SystemClock.sleep(500);
+
+
+            HashMap<String, String> valores = new HashMap<>();
+            valores.put("senha", _senha);
+            valores.put("cpf", _email);
+
+
+
+            retornoApi = Http
+                    .post(API_URL+"/Login", valores);
+
+
+            try {
+                objeto = new JSONObject(retornoApi);
+
+                JSONObject results = objeto.getJSONObject("results");
+
+
+
+                /*for (int i=0; i < results.length(); i++){
+                    Usuario user = Usuario.create(
+                            results.getInt("idPaciente"));
+                }*/
+
+            } catch (Exception e) {
+                 Log.e("ERRO :",e.getMessage());
+                 e.printStackTrace();
+                //startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            }
+
+
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            progressBar.setVisibility(View.GONE);
+            btn_login.setVisibility(View.VISIBLE);
+
+
+            //alert("API", String.valueOf(objeto.getBoolean("sucesso")));
+
+            try {
+                if (objeto.getBoolean("sucesso")) {
+                    //alert("Login", String.valueOf(objeto));
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+
+                    SharedPreferences preferencias = getPreferences(MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferencias.edit();
+
+                    //editor.commit();
+                    editor.apply();
+
+                }else{
+                    Toast.makeText(LoginActivity.this, "Login ou Senha incorreto", Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        private void alert(String titulo, String msg){
+
+
+            AlertDialog.Builder builder = new AlertDialog.Builder( LoginActivity.this);
+
+            builder.setMessage(msg)
+                    .setTitle(titulo);
+
+            builder.setPositiveButton("OK", null);
+
+            AlertDialog dialog = builder.create();
+
+            //mostrar o alerta
+            dialog.show();
+        }
+    }
+
+}
+
