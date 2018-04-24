@@ -2,11 +2,13 @@ package com.example.a16254838.hospitalhhealth;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -40,11 +42,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
-
-
 
         setContentView(R.layout.activity_main);
 
@@ -92,6 +89,24 @@ public class MainActivity extends AppCompatActivity {
 
 
         ListarExames();
+        // Listar_Exames.java
+        /* Click nas listas para intent com o Chrome que resulta no download do exame*/
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String url = "http://www.facebook.com";
+                Intent in = new Intent(Intent.ACTION_VIEW);
+                in.setData(Uri.parse(url));
+                startActivity(in);
+            }}
+        );
+
+        /*listView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });*/
     }
 
 
@@ -109,98 +124,94 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /*
-    * Codigo da tela listar exames Listar_Exames
-    *
-    * */
-    public void ListarExames(){
+    // Listar_Exames.java
+        /*
+        * Codigo da tela listar exames Listar_Exames
+        *
+        * */
+        public void ListarExames(){
 
-        API_URL = getString(R.string.API_URL);
-
-
-        /*Listar Exames */
-        listView = findViewById(R.id.listar_Exames_);
+            API_URL = getString(R.string.API_URL);
 
 
-        /* Criando adater*/
-        adapter = new ExameAdapter(this,new ArrayList<Exame>());
+            /*Listar Exames */
+            listView = findViewById(R.id.listar_Exames_);
 
-        /*definir adapter na lista*/
-        listView.setAdapter(adapter);
 
-        //Roda o comando em segundo plano.
-        new AsyncTask<Void, Void, Void>(){
+            /* Criando adater*/
+            adapter = new ExameAdapter(this,new ArrayList<Exame>());
 
-            ArrayList<Exame> lstExame = new ArrayList<Exame>();
 
-            @Override
-            protected Void doInBackground(Void... voids) {
-                retornoJson = Http.get(API_URL+"/ListarResultadoExame");
+            /*definir adapter na lista*/
+            listView.setAdapter(adapter);
+            //Roda o comando em segundo plano.
+            new AsyncTask<Void, Void, Void>(){
 
-                Log.d("Retorno :", retornoJson);
-                try {
-                    objeto = new JSONObject(retornoJson);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                ArrayList<Exame> lstExame = new ArrayList<Exame>();
 
-                try {
-                    JSONObject results = objeto.getJSONObject("results");
-                    JSONArray ArrayResult = new JSONArray(results);
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    retornoJson = Http.get(API_URL+"/ListarResultadoExame");
 
-                    for (int i=0; i < ArrayResult.length(); i++){
-                        JSONObject item = ArrayResult.getJSONObject(i);
-                        Exame e = Exame.create(
-                                item.getInt("idResultadoExame"),
-                                item.getInt("idPaciente"),
-                                item.getInt("idMedico"),
-                                item.getInt("idExame"),
-                                item.getString("resultado")
-                        );
-                        lstExame.add(e);
+                    Log.d("Retorno :", retornoJson);
+
+                    try {
+                        objeto = new JSONObject(retornoJson);
+
+                        JSONArray ArrayResult = objeto.getJSONArray("results");
+
+                        //JSONArray ArrayResult = new JSONArray(results);
+
+                        for (int i=0; i < ArrayResult.length(); i++){
+                            JSONObject item = ArrayResult.getJSONObject(i);
+                            Exame e = Exame.create(
+                                    item.getInt("idResultadoExame"),
+                                    item.optInt("idPaciente"),
+                                    item.optInt("idMedico"),
+                                    item.optInt("idExame"),
+                                    item.getString("resultado")
+                            );
+                            lstExame.add(e);
+                        }
+
+                    } catch (Exception e) {
+                        Log.e("ERRO :",e.getMessage());
+                        e.printStackTrace();
                     }
 
-                } catch (Exception e) {
-                    Log.e("ERRO :",e.getMessage());
-                    e.printStackTrace();
+                    return null;
                 }
 
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                alert("API TESTE", String.valueOf(objeto)
-                );
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    super.onPostExecute(aVoid);
+                    alert("API TESTE", String.valueOf(objeto)
+                    );
 
 
 
-                adapter.addAll(lstExame);
-            }
-        }.execute();
+                    adapter.addAll(lstExame);
+                }
+            }.execute();
 
 
 
 
-    }
-    public void alert(String titulo, String msg){
+        }
+        public void alert(String titulo, String msg){
 
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this );
+            AlertDialog.Builder builder = new AlertDialog.Builder(this );
 
-        builder.setMessage(msg)
-                .setTitle(titulo);
+            builder.setMessage(msg)
+                    .setTitle(titulo);
 
-        builder.setPositiveButton("OK", null);
+            builder.setPositiveButton("OK", null);
 
-        AlertDialog dialog = builder.create();
+            AlertDialog dialog = builder.create();
 
-        //mostrar o alerta
-        dialog.show();
-    }
-
-
-
+            //mostrar o alerta
+            dialog.show();
+        }
 
 }

@@ -50,7 +50,6 @@ public class MarcarConsulta extends AppCompatActivity {
                 }else{
                      data = year + "/" + month + "/" + dayOfMonth;
                 }
-
                 Log.d("Data Calendario", data );
             }
         });

@@ -11,7 +11,7 @@
         android:layout_width="46dp"
         android:layout_height="match_parent"
         android:layout_gravity="left"
-
+        android:background="@drawable/ic_assignment_white_24dp"
         />
 
     <LinearLayout
