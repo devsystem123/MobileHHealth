@@ -1,16 +1,19 @@
 package com.example.a16254838.hospitalhhealth;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.a16254838.hospitalhhealth.adapter.AdapterCursosPersonalizado;
 import com.example.a16254838.hospitalhhealth.model.Categoria;
@@ -18,6 +21,7 @@ import com.example.a16254838.hospitalhhealth.model.Curso;
 import com.example.a16254838.hospitalhhealth.model.EstadoAtual;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -30,10 +34,17 @@ public class MainActivity extends AppCompatActivity {
     ExameAdapter adapter;
     String retornoJson;
     String API_URL;
+    Button bt_list;
+    JSONObject objeto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+
+
 
         setContentView(R.layout.activity_main);
 
@@ -76,6 +87,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
 //		tabHost.setCurrentTab(0);
+
+
+
+
+        ListarExames();
     }
 
 
@@ -92,15 +108,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+    /*
+    * Codigo da tela listar exames Listar_Exames
+    *
+    * */
     public void ListarExames(){
-        ListView lista = findViewById(R.id.lista);
 
         API_URL = getString(R.string.API_URL);
 
 
-        lista.setAdapter(adapter);
-
-        listView = findViewById(R.id.listaExames);
+        /*Listar Exames */
+        listView = findViewById(R.id.listar_Exames_);
 
 
         /* Criando adater*/
@@ -119,12 +138,18 @@ public class MainActivity extends AppCompatActivity {
                 retornoJson = Http.get(API_URL+"/ListarResultadoExame");
 
                 Log.d("Retorno :", retornoJson);
+                try {
+                    objeto = new JSONObject(retornoJson);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 try {
-                    JSONArray jsonArray = new JSONArray(retornoJson);
+                    JSONObject results = objeto.getJSONObject("results");
+                    JSONArray ArrayResult = new JSONArray(results);
 
-                    for (int i=0; i < jsonArray.length(); i++){
-                        JSONObject item = jsonArray.getJSONObject(i);
+                    for (int i=0; i < ArrayResult.length(); i++){
+                        JSONObject item = ArrayResult.getJSONObject(i);
                         Exame e = Exame.create(
                                 item.getInt("idResultadoExame"),
                                 item.getInt("idPaciente"),
@@ -146,9 +171,33 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
+                alert("API TESTE", String.valueOf(objeto)
+                );
+
+
+
                 adapter.addAll(lstExame);
             }
         }.execute();
+
+
+
+
+    }
+    public void alert(String titulo, String msg){
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this );
+
+        builder.setMessage(msg)
+                .setTitle(titulo);
+
+        builder.setPositiveButton("OK", null);
+
+        AlertDialog dialog = builder.create();
+
+        //mostrar o alerta
+        dialog.show();
     }
 
 

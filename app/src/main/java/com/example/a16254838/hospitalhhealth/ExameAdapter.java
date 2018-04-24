@@ -44,7 +44,7 @@ public class ExameAdapter extends ArrayAdapter<Exame> {
         DescExame = v.findViewById(R.id.lista_curso_personalizada_descricao);
 
         DescExame.setText(item.getResultado());
-
+        NomeExame.setText("Nome Exame");
         //ImgExame.setImageDrawable(R.drawable.ic_assignment_white_24dp);
 
         /*
