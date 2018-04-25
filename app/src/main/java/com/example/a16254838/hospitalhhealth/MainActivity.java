@@ -176,7 +176,8 @@ public class MainActivity extends AppCompatActivity {
                                     item.optInt("idPaciente"),
                                     item.optInt("idMedico"),
                                     item.optInt("idExame"),
-                                    item.getString("resultado")
+                                    item.getString("resultado"),
+                                    item.getString("nome")
                             );
                             lstExame.add(e);
                         }

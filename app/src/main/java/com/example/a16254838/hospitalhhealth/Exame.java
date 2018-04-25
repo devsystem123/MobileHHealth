@@ -10,15 +10,17 @@ public class Exame {
     int idMedico;
     int idExame;
     String resultado;
+    String nome;
 
 
-    public static Exame create(int idResultadoExame, int idPaciente, int idMedico, int idExame, String resultado){
+    public static Exame create(int idResultadoExame, int idPaciente, int idMedico, int idExame, String resultado, String nome){
         Exame exame = new Exame();
         exame.setIdResultadoExame(idResultadoExame);
         exame.setIdPaciente(idPaciente);
         exame.setIdMedico(idMedico);
         exame.setIdExame(idExame);
         exame.setResultado(resultado);
+        exame.setNome(nome);
         return exame;
     }
 
@@ -60,5 +62,13 @@ public class Exame {
 
     public void setResultado(String resultado) {
         this.resultado = resultado;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }
