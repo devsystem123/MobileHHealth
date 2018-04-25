@@ -32,12 +32,18 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    ListView listView;
-    ExameAdapter adapter;
-    String retornoJson;
+    /*Listar_Exames.java*/
+        ListView listView;
+        ExameAdapter adapter;
+        String retornoJson;
+        JSONObject objeto;
+
     String API_URL;
     Button bt_list;
-    JSONObject objeto;
+
+    /*Lista_Historico*/
+        ConsultaAdapter adapterConsulta;
+        String retornoJsonConsulta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,27 +92,28 @@ public class MainActivity extends AppCompatActivity {
 //		tabHost.setCurrentTab(0);
 
 
-
-
-        ListarExames();
         // Listar_Exames.java
-        /* Click nas listas para intent com o Chrome que resulta no download do exame*/
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String url = "http://www.facebook.com";
-                Intent in = new Intent(Intent.ACTION_VIEW);
-                in.setData(Uri.parse(url));
-                startActivity(in);
-            }}
-        );
 
-        /*listView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            //Chama Função que lista o historico de exames
+            ListarExames();
 
-            }
-        });*/
+
+            /* Click nas listas para intent com o Chrome que resulta no download do exame*/
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        String url = "http://www.facebook.com";
+                        Intent in = new Intent(Intent.ACTION_VIEW);
+                        in.setData(Uri.parse(url));
+                        startActivity(in);
+                    }}
+                );
+
+        // Lista_Historico.java
+
+            /*Chama Função que lista historico de consultas*/
+            ListarConsulta();
+
     }
 
 
@@ -197,6 +204,68 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        }
+
+        public void ListarConsulta(){
+            API_URL = getString(R.string.API_URL);
+
+
+            /*Listar Exames */
+            ListView ListaConsulta = findViewById(R.id.lista_consulta);
+
+
+            /* Criando adater*/
+            adapterConsulta = new ConsultaAdapter(this,new ArrayList<Exame>());
+
+
+            /*definir adapter na lista*/
+            ListaConsulta.setAdapter(adapterConsulta);
+            //Roda o comando em segundo plano.
+            new AsyncTask<Void, Void, Void>(){
+
+                ArrayList<Exame> lstConsula = new ArrayList<Exame>();
+
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    retornoJsonConsulta = Http.get(API_URL+"/ListarResultadoConsulta");
+
+                    Log.d("Retorno :", retornoJsonConsulta);
+
+                    try {
+                        objeto = new JSONObject(retornoJsonConsulta);
+
+                        JSONArray ArrayResult = objeto.getJSONArray("results");
+
+                        //JSONArray ArrayResult = new JSONArray(results);
+
+                        for (int i=0; i < ArrayResult.length(); i++){
+                            JSONObject item = ArrayResult.getJSONObject(i);
+                            Exame e = Exame.create(
+                                    item.getInt("idResultadoExame"),
+                                    item.optInt("idPaciente"),
+                                    item.optInt("idMedico"),
+                                    item.optInt("idExame"),
+                                    item.getString("resultado")
+                            );
+                            lstConsula.add(e);
+                        }
+
+                    } catch (Exception e) {
+                        Log.e("ERRO :",e.getMessage());
+                        e.printStackTrace();
+                    }
+
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    super.onPostExecute(aVoid);
+                    alert("API TESTE", String.valueOf(objeto)
+                    );
+                    adapterConsulta.addAll(lstConsula);
+                }
+            }.execute();
         }
         public void alert(String titulo, String msg){
 
