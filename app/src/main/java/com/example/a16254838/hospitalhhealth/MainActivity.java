@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             /* Criando adater*/
-            adapterConsulta = new ConsultaAdapter(this,new ArrayList<Exame>());
+            adapterConsulta = new ConsultaAdapter(this,new ArrayList<ClassConsulta>());
 
 
             /*definir adapter na lista*/
@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
             //Roda o comando em segundo plano.
             new AsyncTask<Void, Void, Void>(){
 
-                ArrayList<Exame> lstConsula = new ArrayList<Exame>();
+                ArrayList<ClassConsulta> lstConsula = new ArrayList<ClassConsulta>();
 
                 @Override
                 protected Void doInBackground(Void... voids) {
@@ -240,14 +240,14 @@ public class MainActivity extends AppCompatActivity {
 
                         for (int i=0; i < ArrayResult.length(); i++){
                             JSONObject item = ArrayResult.getJSONObject(i);
-                            Exame e = Exame.create(
-                                    item.getInt("idResultadoExame"),
+                            ClassConsulta Consul = ClassConsulta.create(
+                                    item.getInt("idResConsulta"),
                                     item.optInt("idPaciente"),
                                     item.optInt("idMedico"),
-                                    item.optInt("idExame"),
-                                    item.getString("resultado")
+                                    item.optInt("idConsulta"),
+                                    item.getString("Relatorio")
                             );
-                            lstConsula.add(e);
+                            lstConsula.add(Consul);
                         }
 
                     } catch (Exception e) {

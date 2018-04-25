@@ -15,14 +15,14 @@ import java.util.ArrayList;
  * Created by 16254866 on 25/04/2018.
  */
 
-public class ConsultaAdapter extends ArrayAdapter<Exame> {
+public class ConsultaAdapter extends ArrayAdapter<ClassConsulta> {
 
     ImageView ImgExame;
     TextView NomeExame;
     TextView DescExame;
 
-    public ConsultaAdapter(Context context, ArrayList<Exame> lstExame){
-        super(context, 0, lstExame);
+    public ConsultaAdapter(Context context, ArrayList<ClassConsulta> lstConsul){
+        super(context, 0, lstConsul);
     }
 
     @NonNull
@@ -36,13 +36,13 @@ public class ConsultaAdapter extends ArrayAdapter<Exame> {
             v = LayoutInflater.from(getContext()).inflate(R.layout.lista_exames,null);
 
         }
-        Exame item = getItem(position);
+        ClassConsulta item = getItem(position);
 
         ImgExame = v.findViewById(R.id.lista_curso_personalizada_imagem);
         NomeExame = v.findViewById(R.id.lista_curso_personalizada_nome);
         DescExame = v.findViewById(R.id.lista_curso_personalizada_descricao);
 
-        DescExame.setText(item.getResultado());
+        DescExame.setText(item.getRelatorio());
         NomeExame.setText("Nome Exame");
 
 
