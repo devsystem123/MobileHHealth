@@ -20,5 +20,6 @@ android:background="#FFFDFDFE">
     android:backgroundTint="@color/colorPrimary"
     android:text="Ler QrCode"
     android:textColor="@color/branco"
-    android:textStyle="bold" />
+    android:textStyle="bold"
+    android:id="@+id/btnScan"/>
 </LinearLayout>

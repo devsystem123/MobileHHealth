@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://C:\Users\16254866\Desktop\Nova pasta\HospitalHHealth.iml" filepath="C:\Users\16254866\Desktop\Nova pasta\HospitalHHealth.iml" />
-      <module fileurl="file://C:\Users\16254866\Desktop\NovaPasta\Nova pasta.iml" filepath="C:\Users\16254866\Desktop\NovaPasta\Nova pasta.iml" />
-      <module fileurl="file://$PROJECT_DIR$/NovaPasta.iml" filepath="$PROJECT_DIR$/NovaPasta.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HospitalHHealth.iml" filepath="$PROJECT_DIR$/HospitalHHealth.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\16254866\Desktop\Nova pasta\app\app.iml" filepath="C:\Users\16254866\Desktop\Nova pasta\app\app.iml" />
     </modules>
   </component>
 </project>

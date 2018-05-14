@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/tabhost"
-    android:layout_width="fill_parent"
+    android:layout_width="wrap_content"
     android:layout_height="fill_parent"
     >
     <LinearLayout
@@ -9,6 +9,15 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvresult"
+            android:textColor="#000"
+            android:layout_marginTop="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Result will be here"/>
+
         <TabWidget
             android:id="@android:id/tabs"
             android:layout_width="wrap_content"
@@ -44,10 +53,10 @@
 
         <FrameLayout
             android:id="@android:id/tabcontent"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="fill_parent">
 
-            <include layout="@layout/activity_senha_paciente"/>
+            <include layout="@layout/activity_ler_qr_code"/>
 
             <include layout="@layout/activity_consulta"/>
 

@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -26,7 +27,7 @@ import java.util.HashMap;
  */
 public class LoginActivity extends Activity {
 
-    private static final String MANTER_CONECTADO="manter_conectado";
+    public static final String MANTER_CONCTADO="manter_conectado";
 
     private EditText usuario;
     private EditText senha;
@@ -34,6 +35,7 @@ public class LoginActivity extends Activity {
     ProgressBar progressBar;
     String API_URL;
     JSONObject objeto;
+    CheckBox manterConectado;
 
 
 
@@ -46,6 +48,7 @@ public class LoginActivity extends Activity {
         senha = findViewById(R.id.senha);
         btn_login = findViewById(R.id.btn_Login);
         progressBar = findViewById(R.id.progress_bar);
+        manterConectado = findViewById(R.id.manterConectado);
 
         //buscando a URL da API
         API_URL = getString(R.string.API_URL);
@@ -54,15 +57,16 @@ public class LoginActivity extends Activity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 //Efetuando o login
-                new LoginTask().execute();
+                //new LoginTask().execute();
                 //Toast.makeText(LoginActivity.this, "Funciona", Toast.LENGTH_SHORT).show();
             }
         });
 
 
-        SharedPreferences preferencias = getPreferences(MODE_PRIVATE);
-        boolean conectado = preferencias.getBoolean(MANTER_CONECTADO,false);
+        SharedPreferences preferencias = getSharedPreferences("Perfil",MODE_PRIVATE);
+        boolean conectado = preferencias.getBoolean(MANTER_CONCTADO,false);
 
         if(conectado) {
             startActivity(new Intent(this, MainActivity.class));
@@ -133,7 +137,7 @@ public class LoginActivity extends Activity {
             } catch (Exception e) {
                  Log.e("ERRO :",e.getMessage());
                  e.printStackTrace();
-                //startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                 //startActivity(new Intent(LoginActivity.this, MainActivity.class));
             }
 
 
@@ -156,9 +160,9 @@ public class LoginActivity extends Activity {
                     //alert("Login", String.valueOf(objeto));
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
-                    SharedPreferences preferencias = getPreferences(MODE_PRIVATE);
+                    SharedPreferences preferencias = getSharedPreferences("Perfil",MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferencias.edit();
-
+                    editor.putBoolean(MANTER_CONCTADO,manterConectado.isChecked());
                     //editor.commit();
                     editor.apply();
 

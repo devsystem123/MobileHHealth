@@ -43,7 +43,7 @@ public class ConsultaAdapter extends ArrayAdapter<ClassConsulta> {
         DescExame = v.findViewById(R.id.lista_curso_personalizada_descricao);
 
         DescExame.setText(item.getRelatorio());
-        NomeExame.setText("Nome Exame");
+        NomeExame.setText(item.getNome());
 
 
 

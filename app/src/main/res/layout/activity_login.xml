@@ -28,16 +28,11 @@
             android:orientation="vertical">
 
             <ImageView
+                android:layout_marginTop="50dp"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@drawable/ic_launcher_background" />
-            <TextView android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Usuario:x senha:x"
-                android:id="@+id/gitlablink"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center"
-                android:linksClickable="true" />
-
+                android:src="@drawable/hhealth"
+                android:layout_marginBottom="20dp"/>
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -58,6 +53,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
+                    android:layout_marginTop="10dp"
                     android:id="@+id/senha"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -74,7 +70,7 @@
                 android:id="@+id/manterConectado"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="manter conectado"
+                android:text="Manter conectado"
                 />
 
             <ProgressBar
@@ -89,13 +85,14 @@
                 android:id="@+id/btn_Login"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginTop="16dp"
                 android:backgroundTint="@color/colorPrimary"
                 android:onClick="entrarOnClick"
                 android:text="@string/Logar"
                 android:textColor="@color/branco"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textSize="17sp"/>
 
         </LinearLayout>
     </ScrollView>

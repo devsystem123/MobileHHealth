@@ -10,14 +10,16 @@ public class ClassConsulta {
     int idMedico;
     int idConsulta;
     String Relatorio;
+    String nome;
 
-    public static ClassConsulta create(int idResConsulta, int idPaciente, int idMedico, int idConsulta, String Relatorio){
+    public static ClassConsulta create(int idResConsulta, int idPaciente, int idMedico, int idConsulta, String Relatorio, String nome){
         ClassConsulta Consul = new ClassConsulta();
         Consul.setIdResConsulta(idResConsulta);
         Consul.setIdPaciente(idPaciente);
         Consul.setIdMedico(idMedico);
         Consul.setIdConsulta(idConsulta);
         Consul.setRelatorio(Relatorio);
+        Consul.setNome(nome);
         return Consul;
     }
 
@@ -59,5 +61,13 @@ public class ClassConsulta {
 
     public void setRelatorio(String relatorio) {
         Relatorio = relatorio;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }
