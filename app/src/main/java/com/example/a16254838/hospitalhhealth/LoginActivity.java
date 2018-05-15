@@ -57,9 +57,9 @@ public class LoginActivity extends Activity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                //startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 //Efetuando o login
-                //new LoginTask().execute();
+                new LoginTask().execute();
                 //Toast.makeText(LoginActivity.this, "Funciona", Toast.LENGTH_SHORT).show();
             }
         });
@@ -167,7 +167,7 @@ public class LoginActivity extends Activity {
                     editor.apply();
 
                 }else{
-                    Toast.makeText(LoginActivity.this, "Login ou Senha incorreto", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "CPF ou Senha estão incorretos", Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -1,6 +1,5 @@
 package com.example.a16254838.hospitalhhealth;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -9,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.Spinner;
@@ -19,7 +19,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MarcarConsulta extends AppCompatActivity {
@@ -27,8 +26,14 @@ public class MarcarConsulta extends AppCompatActivity {
     CalendarView Calendario;
     String API_URL;
     JSONObject objeto;
+    Spinner spn1;
     //public String array_spinner[];
     JSONArray arrayEspecilidade;
+    JSONArray arrayHora;
+    private String nome;
+    private ArrayList<String> arrayListSpinner = new ArrayList<String>();
+    private ArrayList<String> arrayListSpinnerHora = new ArrayList<String>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,17 +51,20 @@ public class MarcarConsulta extends AppCompatActivity {
                 month = month + 1;
                 String data;
                 if (month <10) {
-                     data = year + "/0" + month + "/" + dayOfMonth;
+                     data = year + "-0" + month + "-" + dayOfMonth;
                 }else{
-                     data = year + "/" + month + "/" + dayOfMonth;
+                     data = year + "-" + month + "-" + dayOfMonth;
                 }
                 Log.d("Data Calendario", data );
             }
         });
 
 
-        /*new AsyncTask<Void,Void,Void>() {
+        new PreencherEspecialidade().execute();
+        new PreencherHoras().execute();
+    }
 
+    private class PreencherEspecialidade extends AsyncTask<Void,Void,Void>{
             String retornoApi;
             JSONObject results;
 
@@ -69,46 +77,70 @@ public class MarcarConsulta extends AppCompatActivity {
                 retornoApi = Http
                         .get(API_URL+"/Especialidade");
 
+
                 try {
                     objeto = new JSONObject(retornoApi);
-                    results = objeto.getJSONObject("results");
+                    //results = objeto.getJSONObject("results");
 
-                    arrayEspecilidade = new JSONArray(results);
+                    arrayEspecilidade = objeto.getJSONArray("results");
 
                     for (int i=0; i < arrayEspecilidade.length(); i++){
                         JSONObject item = arrayEspecilidade.getJSONObject(i);
-                        Especialidade espec = Especialidade.create(
-                                item.getInt("idEspecialidade"),
-                                item.getString("nome"));
+                        arrayListSpinner.add(item.getString("nome"));
                     }
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
-
-
                 return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                alert("API Spinner", String.valueOf(objeto));
+                PreencherSpinner(arrayListSpinner);
+                //alert("API Spinner", String.valueOf(arrayEspecilidade));
             }
-        }.execute();*/
-
-        //Calendario.setDate(Long.parseLong(data));
-
-        /*Spinner s = findViewById(R.id.SpinermarcarConsulta1);
-        ArrayAdapter adapter = new ArrayAdapter(this,
-                android.R.layout.simple_spinner_item, (List) arrayEspecilidade);
-        s.setAdapter(adapter);*/
 
     }
 
+    private class PreencherHoras extends AsyncTask<Void,Void,Void>{
+
+        String retornoApi;
+        JSONObject results;
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            SystemClock.sleep(500);
+
+            retornoApi = Http
+                    .get(API_URL+"/ListarHoras");
+
+
+            try {
+                objeto = new JSONObject(retornoApi);
+                //results = objeto.getJSONObject("results");
+
+                arrayHora = objeto.getJSONArray("results");
+
+                for (int i=0; i < arrayHora.length(); i++){
+                    JSONObject item = arrayHora.getJSONObject(i);
+                    arrayListSpinnerHora.add(item.getString("hora"));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            PreencherSpinnerHora(arrayListSpinnerHora);
+            //alert("API Spinner", String.valueOf(arrayEspecilidade));
+        }
+    }
     public void SalvarConsulta(View view) {
     }
 
@@ -135,6 +167,62 @@ public class MarcarConsulta extends AppCompatActivity {
 
         //mostrar o alerta
         dialog.show();
+    }
+
+    public void PreencherSpinner(ArrayList<String> hora) {
+
+        //Identifica o Spinner no layout
+        spn1 = (Spinner) findViewById(R.id.SpinermarcarConsulta1);
+        //Cria um ArrayAdapter usando um padrão de layout da classe R do android, passando o ArrayList nomes
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, hora);
+        ArrayAdapter<String> spinnerArrayAdapter = arrayAdapter;
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        spn1.setAdapter(spinnerArrayAdapter);
+
+        //Método do Spinner para capturar o item selecionado
+        spn1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View v, int posicao, long id) {
+                //pega nome pela posição
+                nome = parent.getItemAtPosition(posicao).toString();
+                //imprime um Toast na tela com o nome que foi selecionado
+                //Toast.makeText(MarcarConsulta.this, "Nome Selecionado: " + nome, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+        public void PreencherSpinnerHora(ArrayList<String> Especialidade) {
+
+        //Identifica o Spinner no layout
+        spn1 = (Spinner) findViewById(R.id.SpinermarcarConsulta3);
+        //Cria um ArrayAdapter usando um padrão de layout da classe R do android, passando o ArrayList nomes
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, Especialidade);
+        ArrayAdapter<String> spinnerArrayAdapter = arrayAdapter;
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        spn1.setAdapter(spinnerArrayAdapter);
+
+        //Método do Spinner para capturar o item selecionado
+        spn1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View v, int posicao, long id) {
+                //pega nome pela posição
+                nome = parent.getItemAtPosition(posicao).toString();
+                //imprime um Toast na tela com o nome que foi selecionado
+                //Toast.makeText(MarcarConsulta.this, "Nome Selecionado: " + nome, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
 }

@@ -79,10 +79,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        tvresult = (TextView) findViewById(R.id.tvresult);
-
-
-
 
         TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);
         tabHost.setup();
@@ -125,14 +121,14 @@ public class MainActivity extends AppCompatActivity {
 //		tabHost.setCurrentTab(0);
 
 
-        // Listar_Exames.java
+        /** Listar_Exames.java*/
 
-            //Chama Função que lista o historico de exames
-            //ListarExames();
+            /**Chama Função que lista o historico de exames*/
+            ListarExames();
 
 
-            /* Click nas listas para intent com o Chrome que resulta no download do exame*/
-                /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            /** Click nas listas para intent com o Chrome que resulta no download do exame*/
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         String url = "http://www.facebook.com";
@@ -140,12 +136,12 @@ public class MainActivity extends AppCompatActivity {
                         in.setData(Uri.parse(url));
                         startActivity(in);
                     }}
-                );*/
+                );
 
-            // Lista_Historico.java
+            /**Lista_Historico.java*/
 
-            /*Chama Função que lista historico de consultas*/
-            //ListarConsulta();
+            /**Chama Função que lista historico de consultas*/
+            ListarConsulta();
 
         /*Chama a função pra ler o QrCode*/
         Button btnScan = findViewById(R.id.btnScan);
