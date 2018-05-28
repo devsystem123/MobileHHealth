@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.a16254838.hospitalhhealth">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -21,8 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".ScanActivity"></activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".ScanActivity" />
         <activity android:name=".lerQrCode" />
         <activity android:name=".Senha_paciente" />
         <activity android:name=".Consulta" />
@@ -43,8 +44,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.a16254838.hospitalhhealth.Consulta" />
         </activity>
-        <activity android:name=".Listar_Exames"></activity>
-        <activity android:name=".Lista_Historico"></activity>
+        <activity android:name=".Listar_Exames" />
+        <activity android:name=".Lista_Historico" />
+        <activity android:name=".ListarConsultaMarcadas" />
+        <activity android:name=".ListarConsultasMarcadas"></activity>
     </application>
 
 </manifest>

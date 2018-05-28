@@ -1,5 +1,5 @@
 <resources>
-    <string name="API_URL">http://10.0.2.2:8888</string>
+    <string name="API_URL">"http://10.0.2.2:8888</string>
     <string name="app_name">HHealth</string>
     <string name="consulta">consulta</string>
     <string name="senha">senha</string>

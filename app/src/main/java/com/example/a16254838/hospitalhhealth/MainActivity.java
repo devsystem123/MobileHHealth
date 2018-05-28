@@ -3,8 +3,6 @@ package com.example.a16254838.hospitalhhealth;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +11,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -31,19 +28,15 @@ import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a16254838.hospitalhhealth.adapter.AdapterCursosPersonalizado;
-import com.example.a16254838.hospitalhhealth.model.Categoria;
-import com.example.a16254838.hospitalhhealth.model.Curso;
-import com.example.a16254838.hospitalhhealth.model.EstadoAtual;
+import com.example.a16254838.hospitalhhealth.adapter.ConsultaAdapter;
+import com.example.a16254838.hospitalhhealth.adapter.ExameAdapter;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -192,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (view.getId()) {
             case R.id.consultasMarcadas:
-                startActivity(new Intent(this,ConsultasMarcadas.class));
+                startActivity(new Intent(this,ListarConsultasMarcadas.class));
                 break;
             case R.id.MarcarConsulta:
                 startActivity(new Intent(this,MarcarConsulta.class));

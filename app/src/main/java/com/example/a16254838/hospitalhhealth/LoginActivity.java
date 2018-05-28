@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,8 +35,9 @@ public class LoginActivity extends Activity {
     Button btn_login;
     ProgressBar progressBar;
     String API_URL;
-    JSONObject objeto;
+
     CheckBox manterConectado;
+    Usuario user;
 
 
 
@@ -90,10 +92,11 @@ public class LoginActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class LoginTask extends AsyncTask<Void,Void,Void>{
+    private class LoginTask extends AsyncTask<Void,Void,Void> {
 
         String _email, _senha;
         String retornoApi;
+        JSONObject objeto;
 
         @Override
         protected void onPreExecute() {
@@ -117,27 +120,25 @@ public class LoginActivity extends Activity {
             valores.put("cpf", _email);
 
 
-
             retornoApi = Http
-                    .post(API_URL+"/Login", valores);
+                    .post(API_URL + "/Login", valores);
 
 
             try {
                 objeto = new JSONObject(retornoApi);
+                JSONArray results = objeto.getJSONArray("results");
+                //JSONObject results = objeto.getJSONObject("results");
 
-                JSONObject results = objeto.getJSONObject("results");
-
-
-
-                /*for (int i=0; i < results.length(); i++){
-                    Usuario user = Usuario.create(
-                            results.getInt("idPaciente"));
-                }*/
+                for (int i=0; i < results.length(); i++){
+                    JSONObject item = results.getJSONObject(i);
+                     user = Usuario.create(
+                             item.getInt("idPaciente"));
+                }
 
             } catch (Exception e) {
-                 Log.e("ERRO :",e.getMessage());
-                 e.printStackTrace();
-                 //startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                Log.e("ERRO :", e.getMessage());
+                e.printStackTrace();
+                //startActivity(new Intent(LoginActivity.this, MainActivity.class));
             }
 
 
@@ -153,20 +154,22 @@ public class LoginActivity extends Activity {
             btn_login.setVisibility(View.VISIBLE);
 
 
-            //alert("API", String.valueOf(objeto.getBoolean("sucesso")));
+
+            //alert("API", String.valueOf(objeto));
 
             try {
                 if (objeto.getBoolean("sucesso")) {
                     //alert("Login", String.valueOf(objeto));
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
-                    SharedPreferences preferencias = getSharedPreferences("Perfil",MODE_PRIVATE);
+                    SharedPreferences preferencias = getSharedPreferences("Perfil", MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferencias.edit();
-                    editor.putBoolean(MANTER_CONCTADO,manterConectado.isChecked());
+                    editor.putBoolean(MANTER_CONCTADO, manterConectado.isChecked());
+                    editor.putInt("idUser",user.getId());
                     //editor.commit();
                     editor.apply();
 
-                }else{
+                } else {
                     Toast.makeText(LoginActivity.this, "CPF ou Senha estão incorretos", Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {
@@ -174,23 +177,21 @@ public class LoginActivity extends Activity {
             }
 
         }
-
-        private void alert(String titulo, String msg){
-
-
-            AlertDialog.Builder builder = new AlertDialog.Builder( LoginActivity.this);
-
-            builder.setMessage(msg)
-                    .setTitle(titulo);
-
-            builder.setPositiveButton("OK", null);
-
-            AlertDialog dialog = builder.create();
-
-            //mostrar o alerta
-            dialog.show();
-        }
     }
+    public void alert(String titulo, String msg){
 
+
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this );
+
+        builder.setMessage(msg)
+                .setTitle(titulo);
+
+        builder.setPositiveButton("OK", null);
+
+        android.app.AlertDialog dialog = builder.create();
+
+        //mostrar o alerta
+        dialog.show();
+    }
 }
 
